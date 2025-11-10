@@ -4,7 +4,7 @@ on:
   workflow_dispatch:    # Manual trigger
   push:
     branches:
-      - master
+      - main
 
 jobs:
   create_tag:
