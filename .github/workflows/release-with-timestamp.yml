@@ -35,13 +35,13 @@ jobs:
 
       - name: Create release (auto-generated notes)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-
+          # Use GH_TOKEN for non-interactive authentication (avoid calling `gh auth login`)
           TAG_NAME="v_${{ steps.timestamp.outputs.timestamp }}"
 
           # Create a release and let GitHub auto-generate release notes from commits/PRs
           gh release create "$TAG_NAME" \
             --title "Release $TAG_NAME" \
             --generate-notes \
-            --target master
+            --target main
