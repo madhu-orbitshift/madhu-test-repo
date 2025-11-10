@@ -1,0 +1,49 @@
+name: Tag Master with Timestamp
+
+on:
+  workflow_dispatch:    # Manual trigger
+  push:
+    branches:
+      - master
+
+jobs:
+  create_tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate timestamp
+        id: timestamp
+        run: |
+          TIMESTAMP=$(date -u +"%Y.%m.%d.%H.%M.%S")
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "Generated timestamp: $TIMESTAMP"
+
+      - name: Create and push tag
+        run: |
+          git config user.name "OrbitShift Git Actions"
+          git config user.email "git-actions@orbitshift.ai"
+          TAG_NAME="v_${{ steps.timestamp.outputs.timestamp }}"
+          git tag -a $TAG_NAME -m "Automated tag created on $(date -u)"
+          git push origin $TAG_NAME
+
+      - name: Create release (auto-generated notes)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Authenticate the GitHub CLI using the provided GITHUB_TOKEN
+          echo "$GITHUB_TOKEN" | gh auth login --with-token
+
+          TAG_NAME="v_${{ steps.timestamp.outputs.timestamp }}"
+
+          # Create a release and let GitHub auto-generate release notes from commits/PRs
+          gh release create "$TAG_NAME" \
+            --title "Release $TAG_NAME" \
+            --generate-notes \
+            --target master
