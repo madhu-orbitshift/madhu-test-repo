@@ -42,7 +42,7 @@ Notes and tips
 How to trigger
 - From the GitHub web UI: go to the Actions tab, select "Tag Master with
 	Timestamp", and click "Run workflow".
-- To enable automatic tagging on push, add a `push` trigger to the workflow
+- Automatic tagging is enabled on push, add a `push` trigger to the workflow
 	(for example: `push: branches: [ main ]`).
 
 If you'd like, I can also:
