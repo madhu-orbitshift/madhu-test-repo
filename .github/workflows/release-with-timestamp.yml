@@ -37,8 +37,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Authenticate the GitHub CLI using the provided GITHUB_TOKEN
-          echo "$GITHUB_TOKEN" | gh auth login --with-token
 
           TAG_NAME="v_${{ steps.timestamp.outputs.timestamp }}"
 
