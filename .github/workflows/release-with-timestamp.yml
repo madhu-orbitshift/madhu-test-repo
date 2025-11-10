@@ -2,9 +2,6 @@ name: Tag Master with Timestamp
 
 on:
   workflow_dispatch:    # Manual trigger
-  push:
-    branches:
-      - main
 
 jobs:
   create_tag:
